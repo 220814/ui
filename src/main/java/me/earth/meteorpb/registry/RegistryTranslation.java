@@ -19,7 +19,8 @@ import java.util.stream.Stream;
 
 public class RegistryTranslation {
     public static <T extends Nameable> Registry<T> fromPingBypassRegistry(String name, me.earth.pingbypass.api.registry.Registry<T> registry) {
-        return new SimpleRegistry<>(RegistryKey.ofRegistry(new Identifier("pingbypass", name)), Lifecycle.stable(), true) {
+        // new Identifier -> Identifier.of
+        return new SimpleRegistry<>(RegistryKey.ofRegistry(Identifier.of("pingbypass", name)), Lifecycle.stable(), true) {
             @Override
             public int size() {
                 return registry.size();
@@ -103,7 +104,7 @@ public class RegistryTranslation {
 
             @Override
             public Registry<T> freeze() {
-                return null;
+                return this;
             }
 
             @Override
@@ -123,7 +124,7 @@ public class RegistryTranslation {
 
             @Override
             public Stream<RegistryEntry.Reference<T>> streamEntries() {
-                return null;
+                return Stream.empty();
             }
 
             @Override
@@ -138,22 +139,16 @@ public class RegistryTranslation {
 
             @Override
             public Stream<Pair<TagKey<T>, RegistryEntryList.Named<T>>> streamTagsAndEntries() {
-                return null;
+                return Stream.empty();
             }
 
             @Override
             public Stream<TagKey<T>> streamTags() {
-                return null;
+                return Stream.empty();
             }
 
-            @Override
-            public void clearTags() {
-            }
-
-            @Override
-            public void populateTags(Map<TagKey<T>, List<RegistryEntry<T>>> tagEntries) {
-            }
+            // remove
         };
     }
-
 }
+            
