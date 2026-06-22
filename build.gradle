@@ -26,6 +26,9 @@ repositories {
         name = '3arthMaven'
         url = 'https://3arthqu4ke.github.io/maven'
     }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -35,7 +38,7 @@ dependencies {
 
     modImplementation "meteordevelopment:meteor-client:${project.meteor_version}"
 
-    implementation files("libs/pb-api-0.3.3-fabric.jar")
+    modImplementation files("libs/pb-api-0.3.3-fabric.jar")
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
