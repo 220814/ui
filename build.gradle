@@ -29,18 +29,13 @@ repositories {
 }
 
 dependencies {
-    // Fabric
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    // Meteor
     modImplementation "meteordevelopment:meteor-client:${project.meteor_version}"
 
-    // PingBypass
-    api("me.earth.pingbypass:pb-api:$project.pb_version") {
-        exclude module: 'gson'
-    }
+    implementation files("libs/pb-api-0.3.3-fabric.jar")
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
