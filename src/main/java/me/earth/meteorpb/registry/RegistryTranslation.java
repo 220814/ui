@@ -19,7 +19,6 @@ import java.util.stream.Stream;
 
 public class RegistryTranslation {
     public static <T extends Nameable> Registry<T> fromPingBypassRegistry(String name, me.earth.pingbypass.api.registry.Registry<T> registry) {
-        // new Identifier -> Identifier.of
         return new SimpleRegistry<>(RegistryKey.ofRegistry(Identifier.of("pingbypass", name)), Lifecycle.stable(), true) {
             @Override
             public int size() {
@@ -146,8 +145,6 @@ public class RegistryTranslation {
             public Stream<TagKey<T>> streamTags() {
                 return Stream.empty();
             }
-
-            // remove
         };
     }
 }
