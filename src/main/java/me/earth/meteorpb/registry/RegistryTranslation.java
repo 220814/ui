@@ -140,11 +140,6 @@ public class RegistryTranslation {
             public Stream<Pair<TagKey<T>, RegistryEntryList.Named<T>>> streamTagsAndEntries() {
                 return Stream.empty();
             }
-
-            @Override
-            public Stream<TagKey<T>> streamTags() {
-                return Stream.empty();
-            }
         };
     }
 }
