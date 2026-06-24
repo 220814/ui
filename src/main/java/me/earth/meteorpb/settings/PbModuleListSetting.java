@@ -1,11 +1,10 @@
 package me.earth.meteorpb.settings;
 
-import me.earth.meteorpb.registry.RegistryTranslation;
 import me.earth.pingbypass.PingBypass;
 import me.earth.pingbypass.api.module.Module;
 import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.renderer.GuiRenderer;
-import meteordevelopment.meteorclient.gui.screens.settings.LeftRightListSettingScreen;
+import meteordevelopment.meteorclient.gui.screens.settings.RegistryListSettingScreen;
 import meteordevelopment.meteorclient.gui.themes.meteor.widgets.WMeteorLabel;
 import meteordevelopment.meteorclient.gui.utils.SettingsWidgetFactory;
 import meteordevelopment.meteorclient.gui.widgets.WWidget;
@@ -19,6 +18,10 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
+import net.minecraft.registry.SimpleRegistry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.util.Identifier;
+import com.mojang.serialization.Lifecycle;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,9 +31,6 @@ import java.util.function.Consumer;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
-/**
- * A {@link meteordevelopment.meteorclient.settings.ModuleListSetting}
- */
 public class PbModuleListSetting extends Setting<List<Module>> {
     private static List<String> suggestions;
 
@@ -40,7 +40,7 @@ public class PbModuleListSetting extends Setting<List<Module>> {
             WHorizontalList c2 = table.add(theme.horizontalList()).expandCellX().widget();
             c2.spacing *= 2;
             WButton button = c2.add(theme.button("Select")).expandCellX().widget();
-            button.action = () -> mc.setScreen(new PbModuleListSettingScreen(setting.pingBypass, theme, setting));
+            button.action = () -> mc.setScreen(new PbModuleListSettingScreen(theme, setting, setting.pingBypass));
 
             c2.add(new WSelectedCountLabel(setting).color(theme.textSecondaryColor()));
             reset(theme, table, setting, null);
@@ -135,9 +135,22 @@ public class PbModuleListSetting extends Setting<List<Module>> {
         }
     }
 
-    public static class PbModuleListSettingScreen extends LeftRightListSettingScreen<Module> {
-        public PbModuleListSettingScreen(PingBypass pingBypass, GuiTheme theme, Setting<List<Module>> setting) {
-            super(theme, "Select Modules", setting, setting.get(), RegistryTranslation.fromPingBypassRegistry("modules", pingBypass.getModuleManager()));
+    public static class PbModuleListSettingScreen extends RegistryListSettingScreen<Module> {
+        private final GuiTheme theme;
+
+        @SuppressWarnings("unchecked")
+        public PbModuleListSettingScreen(GuiTheme theme, Setting<List<Module>> setting, PingBypass pingBypass) {
+            super(theme, "Select Modules", setting, setting.get(), new SimpleRegistry<>(RegistryKey.ofRegistry(Identifier.of("pingbypass", "modules")), Lifecycle.stable(), true) {
+                @Override
+                public int size() {
+                    return pingBypass.getModuleManager().size();
+                }
+                @Override
+                public @NotNull Iterator<Module> iterator() {
+                    return pingBypass.getModuleManager().iterator();
+                }
+            });
+            this.theme = theme;
         }
 
         @Override
@@ -159,14 +172,12 @@ public class PbModuleListSetting extends Setting<List<Module>> {
         };
     }
 
-    // Stolen from DefaultSettingsWidgetFactory
     private static class WSelectedCountLabel extends WMeteorLabel {
         private final Setting<?> setting;
         private int lastSize = -1;
 
         public WSelectedCountLabel(Setting<?> setting) {
             super("", false);
-
             this.setting = setting;
         }
 
@@ -189,6 +200,5 @@ public class PbModuleListSetting extends Setting<List<Module>> {
             return -1;
         }
     }
-
-}
-
+ }
+    
