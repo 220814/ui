@@ -22,11 +22,13 @@ import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 import com.mojang.serialization.Lifecycle;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Iterator;
 import java.util.function.Consumer;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
@@ -200,5 +202,5 @@ public class PbModuleListSetting extends Setting<List<Module>> {
             return -1;
         }
     }
- }
-    
+}
+            
