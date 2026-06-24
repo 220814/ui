@@ -50,10 +50,6 @@ public class RegistryTranslation {
                 return null;
             }
 
-            public Lifecycle getEntryLifecycle(T object) {
-                return null;
-            }
-
             @Override
             public Lifecycle getLifecycle() {
                 return null;
@@ -141,5 +137,5 @@ public class RegistryTranslation {
             }
         };
     }
-}
+ }
             
